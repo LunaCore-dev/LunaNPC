@@ -89,10 +89,7 @@ The whole public surface is that one package; everything else is internal and fr
 - The test mod `src/testmod` loads only with `runServer` and never ships: `/lunatest
   <setup>|status|clear` builds ready-to-test variants of a feature through the public API alone. For
   every new feature, add a setup covering its variants; an API gap it hits is a parity bug.
-- `scripts/rcon.py` drives the local dev server (enable RCON in `run/server.properties` with a random
-  password and `pause-when-empty-seconds=-1`, then restore it); `scripts/npctest/` holds repeatable
-  chase, climb, patrol and bodyguard tests. `pathfinding_debug` / `combat_debug` in
-  `run/config/luna_npc.json` turn on the debug logs.
+- `pathfinding_debug` / `combat_debug` in `run/config/luna_npc.json` turn on the debug logs.
 - After a build, both the dev server and the client must run the same jar, or players are kicked
   with a `custom_payload` decoder error.
 
@@ -102,9 +99,9 @@ The whole public surface is that one package; everything else is internal and fr
   `calcProjTraj`); folders, files and classes make sense on their own.
 - Code goes where it belongs: a separate file when it deserves one; only genuinely tiny helpers may
   share a file.
-- Comments only for what the code cannot say (a Minecraft bug being worked around, a non-obvious
-  reason). The codebase stays at or under 10% comment lines: `python scripts/check_comment_ratio.py`
-  must pass before every push; a justified complex file may carry `comment-ratio-exempt`.
+- Comments are one line, and only for what nobody can learn from the code itself (a Minecraft bug
+  being worked around, a non-obvious reason). A longer comment only when truly needed and it cannot
+  be said in one line; otherwise none.
 - Commits follow the LunaCore format: one change per line tagged `[Added]`, `[Fixed]` (with the issue
   reference), `[Changed]`, `[Removed]` or `[Other]`, and `Assisted By AI Model: <model name>` as the
   last line when an AI helped. That is the only AI credit: never add `Co-Authored-By` or

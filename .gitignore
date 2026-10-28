@@ -122,9 +122,6 @@ runs/
 lunacore-api-token
 CLAUDE.local.md
 
-# Python bytecode from scripts/
-__pycache__/
-
 # Generated API reference snapshots (./gradlew exportApi): local only, handed to the website
 docs/wiki/api/
 docs/wiki/api-reference.json
