@@ -166,7 +166,6 @@ and share this unchanged jar for free with its name, version and a link. Publish
 version or selling it needs written permission: https://lunacore.dev/support
 
 License:              LunaNPC-LICENSE.txt
-Changelog:            LunaNPC-CHANGELOG.md
 Bundled skin credits: LunaNPC-skin-credits.txt
 """, "UTF-8")
     }
@@ -182,9 +181,6 @@ jar {
     from("LICENSE.txt") {
         rename { "LunaNPC-LICENSE.txt" }
     }
-    from("CHANGELOG.md") {
-        rename { "LunaNPC-CHANGELOG.md" }
-    }
     // Ship the bundled-skin attribution inside the jar: several bundled textures are MIT / Apache-2.0 /
     // CC-BY-4.0, whose terms require the credit to travel with every distributed copy.
     from("docs/credit_model.txt") {
@@ -194,7 +190,7 @@ jar {
 }
 
 // Fails the release when the built jar is not fit to publish: dev-only code or files inside, a bundled
-// file missing, a version mismatch, a changelog entry without its tag, or any trace of AI tooling.
+// file missing, a version mismatch, or any trace of AI tooling.
 def verifyJar = tasks.register('verifyJar') {
     dependsOn 'jar'
     def jarFile = tasks.named('jar').flatMap { it.archiveFile }
@@ -206,12 +202,12 @@ def verifyJar = tasks.register('verifyJar') {
         try {
             def names = zip.entries().collect { it.name }
             def text = { String name -> zip.getInputStream(zip.getEntry(name)).getText('UTF-8') }
-            ['fabric.mod.json', 'readme.txt', 'LunaNPC-LICENSE.txt', 'LunaNPC-CHANGELOG.md',
+            ['fabric.mod.json', 'readme.txt', 'LunaNPC-LICENSE.txt',
              'LunaNPC-skin-credits.txt', 'assets/luna_npc/icon.png'].each {
                 if (!names.contains(it)) problems << "missing ${it}"
             }
             names.findAll { !it.endsWith('/') && (it ==~ /(?i).*(testmod|apidoc|lunatest).*/ || it.endsWith('.java')
-                    || it.contains('TEMP-CHANGELOG') || it.startsWith('docs/')) }
+                    || it.startsWith('docs/')) }
                     .each { problems << "dev-only entry ${it}" }
             names.findAll { !it.endsWith('/') && !(it ==~ /(META-INF|net\/lunacore\/luna_npc|assets\/luna_npc|data\/luna_npc)\/.*/)
                     && !(it ==~ /[^\/]+\.(json|txt|md)/) }
@@ -223,14 +219,6 @@ def verifyJar = tasks.register('verifyJar') {
             }
             if (names.contains('readme.txt') && !text('readme.txt').contains("Version: ${modVersion}")) {
                 problems << "readme.txt does not say version ${modVersion}"
-            }
-            if (names.contains('LunaNPC-CHANGELOG.md')) {
-                def changelog = text('LunaNPC-CHANGELOG.md')
-                if (!changelog.contains("## ${modVersion}\n") && !changelog.contains("## ${modVersion}\r\n")) {
-                    problems << "CHANGELOG.md has no section for ${modVersion}"
-                }
-                changelog.readLines().findAll { it.startsWith('- ') && !(it ==~ /- \[(Added|Fixed|Changed|Removed|Other)\] .+/) }
-                        .each { problems << "changelog entry without a valid tag: ${it.take(60)}" }
             }
             def trace = ~/(?i)claude|anthropic|co-authored-by|generated with|\bchatgpt\b|\bopenai\b/
             names.findAll { !it.endsWith('/') && !it.endsWith('.png') && !it.endsWith('.ogg') }.each { name ->
@@ -249,7 +237,7 @@ def verifyJar = tasks.register('verifyJar') {
 }
 
 // The public release is build/libs/LunaNPC.jar alone (Modrinth and CurseForge take only the jar, which
-// already carries the license, changelog, readme and skin credits). Refuses while checkApi or verifyJar fails.
+// already carries the license, readme and skin credits). Refuses while checkApi or verifyJar fails.
 tasks.register('release') {
     dependsOn 'checkApi', 'build', verifyJar
 }

@@ -49,8 +49,8 @@ Requires Java 25.
 
 Bugs and ideas go to [lunacore.dev/LunaNPC/reports](https://lunacore.dev/LunaNPC/reports). Code
 contributions follow the [LunaCore contributor guidelines](https://lunacore.dev/guidelines/contributing.md)
-and need the [Contributor License Agreement](CLA.md), which our bot asks you to sign on your first
-pull request.
+and need the [Contributor License Agreement](https://lunacore.dev/legal/cla.md), which our bot asks you to sign on your
+first pull request.
 
 ## License
 
@@ -64,7 +64,7 @@ LunaNPC is free and **source-available** under the
 | Share official releases unchanged and clearly labelled (modpacks, server packs), for free | Sell it, or charge for a pack that contains it |
 | Fork it on GitHub to keep a copy or to contribute | Remove or hide credits and license notices |
 
-Names and logos: see the [Branding Policy](BRANDING.md). Bundled skins keep their own licenses, listed
+Names and logos: see the [Branding Policy](https://lunacore.dev/legal/branding.md). Bundled skins keep their own licenses, listed
 in [docs/credit_model.txt](docs/credit_model.txt).
 
 ### Requesting a license

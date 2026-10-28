@@ -37,14 +37,12 @@ key and mouse codes against `InputConstants`, never literals.
 
 `./gradlew build`, `runClient`, `runServer`, `runDatagen`. `./gradlew release` is the public build:
 `checkApi`, `build` and `verifyJar`, which fails on dev-only code, a missing bundled file, a version
-mismatch, an untagged changelog line or any AI tool name inside the jar. Ship only
-`build/libs/LunaNPC.jar`; it carries the license, the changelog, a readme and the skin credits
-(`docs/credit_model.txt`, required by those skins' own licenses).
+mismatch or any AI tool name inside the jar. Ship only `build/libs/LunaNPC.jar`; it carries the
+license, a readme and the skin credits (`docs/credit_model.txt`, required by those skins' own
+licenses).
 
-**Changelogs:** `CHANGELOG.md` holds every released version (newest first, shipped in the jar);
-`TEMP-CHANGELOG.md` collects the next version's user-facing changes as they land. On release, merge
-it into a new section (no duplicates) and empty it. Every line starts with exactly one tag, in the
-order `[Added]`, `[Fixed]`, `[Changed]`, `[Removed]`, `[Other]`, 1 to 2 sentences.
+Release notes live only on lunacore.dev (https://lunacore.dev/changelog?product=LunaNPC), written by
+the maintainer when a version ships; the repo keeps no changelog files.
 
 ## The API (`net.lunacore.luna_npc.api`)
 

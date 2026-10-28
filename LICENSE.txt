@@ -87,7 +87,7 @@ download page, or through a hosting provider's install list) if all of this hold
 You may fork the Software's public repository on GitHub to keep a copy, to work on it for
 Private Use, or to propose changes to LunaCore. A fork must keep every Origin Notice and must
 not offer builds or releases. LunaCore accepts contributions only under the LunaCore Contributor
-License Agreement; opening a pull request confirms that you have signed it.
+License Agreement (https://lunacore.dev/legal/cla.md); opening a pull request confirms that you have signed it.
 
 ## 7. Conditions for every copy
 
@@ -95,7 +95,7 @@ License Agreement; opening a pull request confirms that you have signed it.
 2. A Derivative states clearly, in its source and wherever it shows its own name, that it is
    based on LunaNPC by LunaCore (https://lunacore.dev/LunaNPC).
 3. This license grants no rights in the names, logos or other marks of LunaCore or its products,
-   except to name the Software's origin truthfully (see the LunaCore Branding Policy).
+   except to name the Software's origin truthfully (see the LunaCore Branding Policy, https://lunacore.dev/legal/branding.md).
 4. Third-party components included in the Software stay under their own licenses, listed with
    them. Minecraft and other third-party software keep their own terms, which this license does
    not change; you remain responsible for following them.
