@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "luna_npc",
+  "version": "${version}",
+  "name": "LunaNPC",
+  "description": "LunaNPC is a Fabric-first NPC framework that supports combat, factions, spawning, trading, dialog, and custom models, configurable in-game or through a developer API.",
+  "authors": [
+    "RaeydZone"
+  ],
+  "contact": {
+    "homepage": "https://lunacore.dev/LunaNPC",
+    "issues": "https://lunacore.dev/LunaNPC/reports"
+  },
+  "license": "LicenseRef-LunaCore-Product-1.0",
+  "icon": "assets/luna_npc/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "fabric-datagen": [
+      "net.lunacore.luna_npc.client.LunaNpcDataGenerator"
+    ],
+    "client": [
+      "net.lunacore.luna_npc.client.LunaNpcClient"
+    ],
+    "main": [
+      "net.lunacore.luna_npc.LunaNpc"
+    ]
+  },
+  "mixins": [
+    "luna_npc.mixins.json",
+    {
+      "config": "luna_npc.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

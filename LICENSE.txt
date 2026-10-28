@@ -1,0 +1,139 @@
+# LunaCore Product License 1.0
+
+Copyright (c) 2026 Danijel Susak, Vienna, Austria, operating under the name LunaCore.
+
+LunaNPC is **free and source-available, not open source.** You may use it, read its
+source, change it for yourself and share the official releases. You may not turn it, or
+anything built from it, into a product of your own.
+
+## 1. Who and what
+
+1. **"LunaCore"** means Danijel Susak and his legal successors, including any company he
+   transfers the rights in the Software to.
+2. **"Software"** means LunaNPC as published by LunaCore at https://lunacore.dev/LunaNPC or in LunaCore's
+   repositories, in source and binary form, with its documentation and assets.
+3. **"Official Release"** means a build of the Software that LunaCore itself published, exactly
+   as published.
+4. **"Derivative"** means anything that contains, translates, adapts or is otherwise built from
+   parts of the Software protected by copyright, modified or not, whatever their share of the
+   whole. A separate work that only uses the Software's public API, without containing parts of
+   the Software, is not a Derivative.
+5. **"Private Use"** means use by you, and by the people who run the same server, project or
+   organisation together with you, without giving copies to anyone else. Letting players join a
+   server that runs the Software is not giving them copies.
+6. **"Publish"** means giving copies of the Software or a Derivative to anyone outside Private
+   Use, in any way: platforms such as Modrinth or CurseForge, websites, release pages, file
+   shares, chats.
+7. **"Origin Notices"** means the copyright notice, this license, and every notice or credit
+   naming LunaCore, LunaNPC or https://lunacore.dev/LunaNPC, in the source, the documentation or anything
+   the Software shows its users.
+
+## 2. Accepting this license
+
+By using, copying, changing or sharing the Software you accept this license. If you do not
+accept it, you have no rights in the Software beyond those the law gives you anyway (section 8).
+Everyone receives this license directly from LunaCore, not from the person they got the
+Software from. The English text is the only binding version.
+
+## 3. What you may do without asking
+
+Subject to sections 4 to 7, LunaCore grants you a free, worldwide, non-exclusive,
+non-transferable license to:
+
+1. download, install and use the Software;
+2. read and study its source code;
+3. change the Software and use your changed version for Private Use;
+4. keep copies in your own storage;
+5. run the Software or your changed version on your own servers and computers, including
+   servers you earn money with (ranks, donations, cosmetics, paid access and the like), as long
+   as you do not charge for the Software itself;
+6. share **Official Releases**, free of charge and clearly labelled in their original form, as
+   set out in section 5;
+7. fork the public repository and contribute, as set out in section 6.
+
+## 4. What needs a separate written license from LunaCore
+
+Unless LunaCore has granted you a separate written license, you may not:
+
+1. **Publish a Derivative**, under any name: as a new product, a "successor", "2.0", "fork",
+   "port" or "edition", or under the LunaNPC name. Crediting LunaCore does not make this
+   allowed.
+2. **Sell, rent or license** the Software or a Derivative, or charge for getting it (a paid
+   download, a paywall, a paid bundle). Section 3.5 (servers) and section 5 (sharing) stay
+   allowed.
+3. **Remove, change or hide Origin Notices**, or present the Software or a Derivative as
+   anyone else's work.
+4. **Change the license**: grant anyone more rights than this license gives, or put the Software
+   or a Derivative under other terms.
+
+LunaCore decides freely and alone whether to grant a separate license, on request. Nothing in
+this license obliges it to, and a license granted to one person gives nothing to others.
+
+## 5. Sharing Official Releases
+
+You may share Official Releases (for example in a modpack, a server pack, on your server's
+download page, or through a hosting provider's install list) if all of this holds:
+
+1. the files are **unchanged**: not edited, repacked, merged or wrapped in an installer;
+2. they are **clearly labelled in their original form**: the name LunaNPC, its version, the
+   credit "by LunaCore" and a link to https://lunacore.dev/LunaNPC, wherever you list what you share;
+3. you **do not charge** for them, or for a pack or bundle that contains them. Charging for your
+   server or your hosting service is fine, as long as the Software is not charged for; platform
+   reward programmes for free downloads are not charging;
+4. you do not suggest that LunaCore made, endorses or supports your pack, server or service.
+
+## 6. Forks and contributions
+
+You may fork the Software's public repository on GitHub to keep a copy, to work on it for
+Private Use, or to propose changes to LunaCore. A fork must keep every Origin Notice and must
+not offer builds or releases. LunaCore accepts contributions only under the LunaCore Contributor
+License Agreement; opening a pull request confirms that you have signed it.
+
+## 7. Conditions for every copy
+
+1. Every copy and every Derivative keeps all Origin Notices and a copy of this license.
+2. A Derivative states clearly, in its source and wherever it shows its own name, that it is
+   based on LunaNPC by LunaCore (https://lunacore.dev/LunaNPC).
+3. This license grants no rights in the names, logos or other marks of LunaCore or its products,
+   except to name the Software's origin truthfully (see the LunaCore Branding Policy).
+4. Third-party components included in the Software stay under their own licenses, listed with
+   them. Minecraft and other third-party software keep their own terms, which this license does
+   not change; you remain responsible for following them.
+
+## 8. Rights the law gives you anyway
+
+Nothing in this license restricts what the law allows without a license and does not let a
+contract exclude, such as making a backup copy, observing, studying or testing how the Software
+works, or decompiling it as far as needed for interoperability (in the EU: Directive 2009/24/EC,
+Articles 5 and 6).
+
+## 9. End of the license
+
+This license ends automatically, without notice, for anyone who breaks it, together with
+every right it gave them. LunaCore may reinstate it in writing. Sections 4, 7, 10 and 11 still
+apply after the end. The end of one person's license does not affect anyone else's.
+
+## 10. No warranty, limited liability
+
+The Software is given away free and "as is", without warranty of any kind. As far as the law
+allows, LunaCore is not liable for any damage arising from the Software or its use. This does
+not limit liability for intent or gross negligence, for injury to life, body or health, or any
+other liability the law does not allow to be limited.
+
+## 11. Law and courts
+
+This license is governed by Austrian law, excluding its conflict-of-law rules and the UN
+Convention on Contracts for the International Sale of Goods. For disputes with businesses, the
+competent courts in Vienna, Austria, have exclusive jurisdiction. Consumers keep the protection
+of the law and the courts of their home country wherever the law gives it to them.
+
+## 12. Versions and the rest
+
+1. LunaCore may publish new versions of this license. Each release of the Software stays under
+   the version it was released with; LunaCore may additionally offer it under a later version.
+   Nothing changes to an open-source or other license automatically.
+2. If any part of this license is invalid, the rest stays in force, and the invalid part counts
+   as replaced by the valid rule that comes closest to its purpose.
+3. No rights are granted beyond what this license states or the law requires.
+
+Questions and license requests: https://lunacore.dev/support

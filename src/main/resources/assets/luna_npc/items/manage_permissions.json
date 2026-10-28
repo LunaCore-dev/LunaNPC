@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "luna_npc:item/manage_permissions",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 4891647
+      }
+    ]
+  }
+}

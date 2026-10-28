@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "luna_npc_testmod",
+  "version": "1.0.0",
+  "name": "LunaNPC Test Setups",
+  "description": "Dev-only: builds test variants of LunaNPC features through the public API (/lunatest).",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.lunacore.luna_npc.testmod.LunaNpcTestMod"
+    ]
+  },
+  "depends": {
+    "luna_npc": "*",
+    "fabric-api": "*"
+  }
+}

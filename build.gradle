@@ -1,0 +1,273 @@
+plugins {
+    id 'net.fabricmc.fabric-loom' version '1.18-SNAPSHOT'
+    id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+// Dev-only test mod (src/testmod): /lunatest builds feature variants through the public API. It runs in
+// runServer but never ships — the jar task only packs main and client.
+sourceSets {
+    testmod {
+        compileClasspath += sourceSets.main.compileClasspath + sourceSets.main.output
+        runtimeClasspath += sourceSets.main.runtimeClasspath + sourceSets.main.output
+    }
+    // Dev-only API reference exporter (src/apidoc): reads the api package source, never ships.
+    apidoc {
+    }
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "luna_npc" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+        "luna_npc_testmod" {
+            sourceSet sourceSets.testmod
+        }
+    }
+
+    runs {
+        server {
+            source sourceSets.testmod
+        }
+    }
+}
+
+fabricApi {
+    configureDataGeneration {
+        client = true
+    }
+}
+
+repositories {
+    // Add repositories to retrieve artifacts from in here.
+    // You should only use this when depending on other mods because
+    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+    // for more information about repositories.
+}
+
+dependencies {
+    // To change the versions see the gradle.properties file
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    apidocImplementation "com.github.javaparser:javaparser-core:3.26.4"
+    apidocImplementation "com.google.code.gson:gson:2.11.0"
+}
+
+// The versioned API reference for lunacore.dev (CLAUDE.md). exportApi writes this version's
+// snapshot and the changes between versions; checkApi fails when it is stale or has empty texts.
+// -Pdescriptions=<file> takes the prose from another snapshot (only needed to seed a new history).
+def apiReferenceArgs = { String command ->
+    def args = [command, '--source', file('src/main/java/net/lunacore/luna_npc/api').path,
+                '--version', project.version.toString(), '--out', file('docs/wiki/api').path,
+                '--latest', file('docs/wiki/api-reference.json').path]
+    if (project.hasProperty('descriptions')) {
+        args += ['--descriptions', project.property('descriptions').toString()]
+    }
+    if (project.hasProperty('apiSource')) {
+        args[2] = project.property('apiSource').toString()
+    }
+    if (project.hasProperty('apiVersion')) {
+        args[4] = project.property('apiVersion').toString()
+    }
+    args
+}
+tasks.register('exportApi', JavaExec) {
+    classpath = sourceSets.apidoc.runtimeClasspath
+    mainClass = 'net.lunacore.luna_npc.apidoc.ApiExport'
+    args apiReferenceArgs('export')
+}
+tasks.register('checkApi', JavaExec) {
+    classpath = sourceSets.apidoc.runtimeClasspath
+    mainClass = 'net.lunacore.luna_npc.apidoc.ApiExport'
+    args apiReferenceArgs('check')
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "minecraft_version", project.minecraft_version
+    inputs.property "loader_version", project.loader_version
+    filteringCharset "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version,
+                "minecraft_version": project.minecraft_version,
+                "loader_version": project.loader_version
+    }
+}
+
+def targetJavaVersion = 25
+tasks.withType(JavaCompile).configureEach {
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    it.options.encoding = "UTF-8"
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        it.options.release.set(targetJavaVersion)
+    }
+}
+
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+    // No sources jar — LunaNPC ships closed-source, so readable source is never generated or published.
+}
+
+// Compact info card (version + official links) written to build/readme.txt and bundled into the jar.
+// Version tracks project.version so it never goes stale.
+def generateReadme = tasks.register('generateReadme') {
+    def readmeFile = layout.buildDirectory.file('readme.txt')
+    outputs.file(readmeFile)
+    def modVersion = project.version.toString()
+    def mcVersion = project.minecraft_version
+    def loaderVersion = project.loader_version
+    def fabricVersion = project.fabric_version
+    def javaVersion = targetJavaVersion.toString()
+    inputs.properties(version: modVersion, minecraft: mcVersion, loader: loaderVersion, fabric: fabricVersion,
+            java: javaVersion)
+    doLast {
+        readmeFile.get().asFile.write("""LunaNPC
+Version: ${modVersion}
+Author:  RaeydZone
+
+Website:     https://lunacore.dev
+Mod:         https://lunacore.dev/LunaNPC
+Changelog:   https://lunacore.dev/changelog?product=LunaNPC
+API:         https://api.lunacore.dev/LunaNPC
+Report bugs: https://lunacore.dev/LunaNPC/reports
+Support:     https://lunacore.dev/support
+Discord:     https://discord.lunacore.dev/
+
+Dependencies (required to run LunaNPC):
+  - Minecraft      ${mcVersion}
+  - Fabric Loader  ${loaderVersion}
+  - Fabric API     ${fabricVersion}
+  - Java           ${javaVersion}+
+
+Copyright (c) Danijel Susak (LunaCore). LunaNPC is free and source-available under the
+LunaCore Product License 1.0 (LunaNPC-LICENSE.txt). You may use it, change it for your own use
+and share this unchanged jar for free with its name, version and a link. Publishing a changed
+version or selling it needs written permission: https://lunacore.dev/support
+
+License:              LunaNPC-LICENSE.txt
+Changelog:            LunaNPC-CHANGELOG.md
+Bundled skin credits: LunaNPC-skin-credits.txt
+""", "UTF-8")
+    }
+}
+
+jar {
+    // Version-less filename on purpose (LunaNPC.jar) so players overwrite the same file each update; the
+    // real version still lives in fabric.mod.json and on the distribution page. Minecraft 26.3 is
+    // unobfuscated, so there is no remapJar step — the jar task produces the shippable mod jar directly.
+    archiveVersion = ''
+    // Keep dev placeholders/junk out of the shipped jar (e.g. .gitkeep in otherwise-empty resource dirs).
+    exclude '**/.gitkeep', '**/.gitignore', '**/.DS_Store', '**/Thumbs.db'
+    from("LICENSE.txt") {
+        rename { "LunaNPC-LICENSE.txt" }
+    }
+    from("CHANGELOG.md") {
+        rename { "LunaNPC-CHANGELOG.md" }
+    }
+    // Ship the bundled-skin attribution inside the jar: several bundled textures are MIT / Apache-2.0 /
+    // CC-BY-4.0, whose terms require the credit to travel with every distributed copy.
+    from("docs/credit_model.txt") {
+        rename { "LunaNPC-skin-credits.txt" }
+    }
+    from(generateReadme)
+}
+
+// Fails the release when the built jar is not fit to publish: dev-only code or files inside, a bundled
+// file missing, a version mismatch, a changelog entry without its tag, or any trace of AI tooling.
+def verifyJar = tasks.register('verifyJar') {
+    dependsOn 'jar'
+    def jarFile = tasks.named('jar').flatMap { it.archiveFile }
+    def modVersion = project.version.toString()
+    inputs.file(jarFile)
+    doLast {
+        def problems = []
+        def zip = new java.util.zip.ZipFile(jarFile.get().asFile)
+        try {
+            def names = zip.entries().collect { it.name }
+            def text = { String name -> zip.getInputStream(zip.getEntry(name)).getText('UTF-8') }
+            ['fabric.mod.json', 'readme.txt', 'LunaNPC-LICENSE.txt', 'LunaNPC-CHANGELOG.md',
+             'LunaNPC-skin-credits.txt', 'assets/luna_npc/icon.png'].each {
+                if (!names.contains(it)) problems << "missing ${it}"
+            }
+            names.findAll { !it.endsWith('/') && (it ==~ /(?i).*(testmod|apidoc|lunatest).*/ || it.endsWith('.java')
+                    || it.contains('TEMP-CHANGELOG') || it.startsWith('docs/')) }
+                    .each { problems << "dev-only entry ${it}" }
+            names.findAll { !it.endsWith('/') && !(it ==~ /(META-INF|net\/lunacore\/luna_npc|assets\/luna_npc|data\/luna_npc)\/.*/)
+                    && !(it ==~ /[^\/]+\.(json|txt|md)/) }
+                    .each { problems << "unexpected entry ${it}" }
+            if (names.contains('fabric.mod.json')) {
+                def mod = new groovy.json.JsonSlurper().parseText(text('fabric.mod.json'))
+                if (mod.version != modVersion) problems << "fabric.mod.json version ${mod.version}, expected ${modVersion}"
+                if (text('fabric.mod.json').contains('${')) problems << 'unexpanded placeholder in fabric.mod.json'
+            }
+            if (names.contains('readme.txt') && !text('readme.txt').contains("Version: ${modVersion}")) {
+                problems << "readme.txt does not say version ${modVersion}"
+            }
+            if (names.contains('LunaNPC-CHANGELOG.md')) {
+                def changelog = text('LunaNPC-CHANGELOG.md')
+                if (!changelog.contains("## ${modVersion}\n") && !changelog.contains("## ${modVersion}\r\n")) {
+                    problems << "CHANGELOG.md has no section for ${modVersion}"
+                }
+                changelog.readLines().findAll { it.startsWith('- ') && !(it ==~ /- \[(Added|Fixed|Changed|Removed|Other)\] .+/) }
+                        .each { problems << "changelog entry without a valid tag: ${it.take(60)}" }
+            }
+            def trace = ~/(?i)claude|anthropic|co-authored-by|generated with|\bchatgpt\b|\bopenai\b/
+            names.findAll { !it.endsWith('/') && !it.endsWith('.png') && !it.endsWith('.ogg') }.each { name ->
+                def content = zip.getInputStream(zip.getEntry(name)).getText('ISO-8859-1')
+                def match = trace.matcher(content)
+                if (match.find()) problems << "AI trace '${match.group()}' in ${name}"
+            }
+        } finally {
+            zip.close()
+        }
+        if (problems) {
+            throw new GradleException("LunaNPC.jar is not releasable:\n  - " + problems.join('\n  - '))
+        }
+        logger.lifecycle("LunaNPC.jar ${modVersion} verified: ready to publish.")
+    }
+}
+
+// The public release is build/libs/LunaNPC.jar alone (Modrinth and CurseForge take only the jar, which
+// already carries the license, changelog, readme and skin credits). Refuses while checkApi or verifyJar fails.
+tasks.register('release') {
+    dependsOn 'checkApi', 'build', verifyJar
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        create("mavenJava", MavenPublication) {
+            artifactId = project.archives_base_name
+            from components.java
+        }
+    }
+
+    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+    repositories {
+        // Add repositories to publish to here.
+        // Notice: This block does NOT have the same function as the block in the top level.
+        // The repositories here will be used for publishing your artifact, not for
+        // retrieving dependencies.
+    }
+}
