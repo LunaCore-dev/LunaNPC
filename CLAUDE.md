@@ -107,6 +107,7 @@ The whole public surface is that one package; everything else is internal and fr
   must pass before every push; a justified complex file may carry `comment-ratio-exempt`.
 - Commits follow the LunaCore format: one change per line tagged `[Added]`, `[Fixed]` (with the issue
   reference), `[Changed]`, `[Removed]` or `[Other]`, and `Assisted By AI Model: <model name>` as the
-  last line when an AI helped.
+  last line when an AI helped. That is the only AI credit: never add `Co-Authored-By` or
+  "Generated with" lines.
 - Reports from players live on lunacore.dev (`https://lunacore.dev/llms.txt` documents the API).
   Public replies are short and human, never internal details; closing a report is a maintainer's call.
